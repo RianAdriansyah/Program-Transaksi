@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 });
+Route::get('/formulir', function () {
+    return view('formulir');
+});
+
+// Route::resource('/barang', 'BarangController');
+
+Route::get('/barang', [BarangController::class, 'index']);
+Route::post('/barang', [BarangController::class, 'store']);
+
+Route::get('/customer', [CustomerController::class, 'index']);
+Route::post('/customer', [CustomerController::class, 'store']);
+
+// Route::get('/customer', function () {
+//     return view('customer');
+// });

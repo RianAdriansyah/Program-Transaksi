@@ -24,11 +24,14 @@ Route::get('/formulir', function () {
 
 // Route::resource('/barang', 'BarangController');
 
-Route::get('/barang', [BarangController::class, 'index']);
-Route::post('/barang', [BarangController::class, 'store']);
+// Route::get('/barang', [BarangController::class, 'index']);
+// Route::post('/barang', [BarangController::class, 'store']);
 
-Route::get('/customer', [CustomerController::class, 'index']);
-Route::post('/customer', [CustomerController::class, 'store']);
+// Route::get('/customer', [CustomerController::class, 'index']);
+// Route::post('/customer', [CustomerController::class, 'store']);
+
+Route::resource('/barang', BarangController::class);
+Route::resource('/customer', CustomerController::class);
 
 // Route::get('/customer', function () {
 //     return view('customer');

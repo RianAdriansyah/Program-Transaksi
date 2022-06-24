@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Barang;
 
-class BarangController extends Controller
+class SalesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $data = Barang::all();
-        return view('barang.index', compact('data'));
+        //
     }
 
     /**
@@ -36,15 +34,7 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'kode' => "required",
-            'nama' => "required",
-            'harga' => 'required'
-        ]);
-
-        Barang::create($data);
-
-        return redirect('barang');
+        //
     }
 
     /**

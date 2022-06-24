@@ -13,11 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('barangs', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kode')->unique();
-            $table->string('nama');
-            $table->double('harga');
+            $table->string('kode');
+            $table->dateTime('tgl');
+            $table->double('subtotal');
+            $table->double('diskon');
+            $table->double('ongkir');
+            $table->double('total_bayar');
+            $table->bigInteger('customer_id')->unsigned();
+            $table->foreign('customer_id')->references('id')->on('customers');
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barangs');
+        Schema::dropIfExists('sales');
     }
 };

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SalesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,7 @@ Route::get('/formulir', function () {
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/customer', CustomerController::class);
+Route::resource('/formulir', SalesController::class);
 
 // Route::get('/customer', function () {
 //     return view('customer');

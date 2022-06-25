@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Barang;
+use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
@@ -37,14 +38,14 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'kode' => "required",
-            'nama' => "required",
-            'harga' => 'required'
+            'kode' => "required|unique:customers",
+            'nama' => "required|max:255",
+            'harga' => 'required|numeric'
         ]);
 
         Barang::create($data);
 
-        return redirect('barang');
+        return redirect('barang')->with('success', 'Barang berhasil ditambahkan!');
     }
 
     /**
@@ -78,7 +79,19 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Barang::findOrFail($request->id_barang);
+
+        // $request->id_barang BERASAL DARI INPUT HIDDEN
+
+        $data = $request->validate([
+            'kode' => "required|unique:customers",
+            'nama' => "required|max:255",
+            'harga' => 'required|numeric'
+        ]);
+
+        DB::table('barangs')->where('id', $request->id_barang)->update($data);
+
+        return redirect('barang')->with('success', 'Barang berhasil diupdate!');
     }
 
     /**
@@ -89,6 +102,9 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Barang::findOrFail($id);
+        $data->delete();
+
+        return redirect('barang')->with('success', 'Barang berhasil dihapus!');
     }
 }

@@ -17,55 +17,55 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Barang::create([
-            'kode' => 'AA0001',
-            'nama' => 'Keyboard',
+            'kode' => 'A001',
+            'nama' => 'Barang A',
             'harga' => '250000'
         ]);
         Barang::create([
-            'kode' => 'AA0002',
-            'nama' => 'Mouse',
+            'kode' => 'C025',
+            'nama' => 'Barang B',
             'harga' => '300000'
         ]);
         Barang::create([
-            'kode' => 'AA0003',
-            'nama' => 'Monitor',
+            'kode' => 'A102',
+            'nama' => 'Barang C',
             'harga' => '5000000'
         ]);
         Barang::create([
-            'kode' => 'AA0004',
-            'nama' => 'Motherboard',
+            'kode' => 'A301',
+            'nama' => 'Barang D',
             'harga' => '2000000'
         ]);
         Barang::create([
-            'kode' => 'AA0005',
-            'nama' => 'Power Supply',
+            'kode' => 'B221',
+            'nama' => 'Barang E',
             'harga' => '2800000'
         ]);
 
 
         Customer::create([
             'kode' => 'BB0001',
-            'nama' => 'Rian Adriansyah',
+            'nama' => 'Cust A',
             'telp' => '081910186646'
         ]);
         Customer::create([
             'kode' => 'BB0002',
-            'nama' => 'Zayn Malik',
+            'nama' => 'Cust B',
             'telp' => '089992833667'
         ]);
         Customer::create([
             'kode' => 'BB0003',
-            'nama' => 'Louis Tomlinson',
+            'nama' => 'Cust C',
             'telp' => '081938452284'
         ]);
         Customer::create([
             'kode' => 'BB0004',
-            'nama' => 'Harry Styles',
+            'nama' => 'Cust D',
             'telp' => '087821377634'
         ]);
         Customer::create([
             'kode' => 'BB0005',
-            'nama' => 'Niall Horan',
+            'nama' => 'Cust E',
             'telp' => '083256347368'
         ]);
 

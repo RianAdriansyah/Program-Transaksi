@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\Sales;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
@@ -13,7 +16,11 @@ class SalesController extends Controller
      */
     public function index()
     {
-        //
+        $sales = Sales::with('customers', 'barangs')->get();
+        $customer = Customer::all();
+        $barang = Barang::all();
+
+        return view('formulir', compact('sales', 'customer', 'barang'));
     }
 
     /**

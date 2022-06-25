@@ -5,7 +5,7 @@
   <section class="tabel-transaksi">
     <div class="container mt-3">
       <div class="row justify-content-center">
-        <div class="col-lg-12 table-responsive">
+        <div class="col-lg-12 ">
           <h5 class="my-4">Daftar Transaksi</h5>
           <table class="table" id="datatables">
             <thead>
@@ -37,7 +37,7 @@
             <tfoot>
               <tr>
                 <th colspan="6" class="text-end">Grand Total</th>
-                <th colspan="4" class="text-end">60000</th>
+                <th colspan="3" class="text-end">60000</th>
               </tr>
             </tfoot>
           </table>

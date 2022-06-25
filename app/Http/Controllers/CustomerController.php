@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -37,9 +38,9 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'kode' => "required",
-            'nama' => "required",
-            'telp' => 'required'
+            'kode' => "required|unique:barangs",
+            'nama' => "required|max:255",
+            'telp' => 'required|numeric'
         ]);
 
         Customer::create($data);
@@ -78,7 +79,17 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Customer::findOrFail($request->id_customer);
+
+        $data = $request->validate([
+            'kode' => "required|unique:barangs",
+            'nama' => "required|max:255",
+            'telp' => 'required|numeric'
+        ]);
+
+        DB::table('customers')->where('id', $request->id_customer)->update($data);
+
+        return redirect('customer')->with('success', 'Data Customer berhasil diupdate!');
     }
 
     /**
@@ -89,6 +100,9 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Customer::findOrFail($id);
+        $data->delete();
+
+        return redirect('customer')->with('success', 'Customer berhasil dihapus!');
     }
 }

@@ -20,6 +20,15 @@ class SalesController extends Controller
         $customer = Customer::all();
         $barang = Barang::all();
 
+        // $namacustomer = Customer::find(request('id'));
+
+
+
+        // return response()->json([
+        // "data" => $customer['0']['nama']
+        // ]);
+
+
         return view('formulir', compact('sales', 'customer', 'barang'));
     }
 
@@ -87,5 +96,23 @@ class SalesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function tampilCustomer(Request $request){
+        
+        $customer = Customer::find(request('id'));
+        return response()->json([
+            'nama' => $customer->nama,
+            'telp' => $customer->telp
+        ]);
+    }
+
+    public function tampilBarang(Request $request){
+
+        $barang = Barang::find(request('id'));
+        return response()->json([
+            'nama' => $barang->nama,
+            'harga' => $barang->harga
+        ]);
     }
 }

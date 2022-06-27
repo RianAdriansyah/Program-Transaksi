@@ -3,9 +3,9 @@
   @section('content')
       
   <section class="tabel-transaksi">
-    <div class="container mt-3">
+    <div class="container mt-4">
       <div class="row justify-content-center">
-        <div class="col-lg-12 ">
+        <div class="col-lg-12 table-responsive">
           <h5 class="my-4">Daftar Transaksi</h5>
           <table class="table" id="datatables">
             <thead>

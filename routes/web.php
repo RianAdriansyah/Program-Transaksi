@@ -34,6 +34,11 @@ Route::get('/formulir', function () {
 Route::resource('/barang', BarangController::class);
 Route::resource('/customer', CustomerController::class);
 Route::resource('/formulir', SalesController::class);
+// Route::post('/formulir/tampilcustomer','SalesController@tampilcustomer');
+
+Route::post('/formulir/tampilCustomer', [SalesController::class, 'tampilCustomer']);
+Route::post('/formulir/tampilBarang', [SalesController::class, 'tampilBarang']);
+
 
 // Route::get('/customer', function () {
 //     return view('customer');

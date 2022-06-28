@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SalesDetailController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,12 +18,12 @@ use App\Http\Controllers\SalesController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::get('/formulir', function () {
-    return view('formulir');
-});
+// Route::get('/', function () {
+//     return view('index');
+// });
+// Route::get('/formulir', function () {
+//     return view('formulir');
+// });
 
 // Route::resource('/barang', 'BarangController');
 
@@ -34,6 +36,7 @@ Route::get('/formulir', function () {
 Route::resource('/barang', BarangController::class);
 Route::resource('/customer', CustomerController::class);
 Route::resource('/formulir', SalesController::class);
+Route::resource('/', SalesDetailController::class);
 // Route::post('/formulir/tampilcustomer','SalesController@tampilcustomer');
 
 Route::post('/formulir/tampilCustomer', [SalesController::class, 'tampilCustomer']);

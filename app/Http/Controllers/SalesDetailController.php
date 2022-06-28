@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\Sales;
+use App\Models\SalesDetail;
 use Illuminate\Http\Request;
 
 class SalesDetailController extends Controller
@@ -13,7 +16,10 @@ class SalesDetailController extends Controller
      */
     public function index()
     {
-        //
+        $salesdetail = SalesDetail::with('sales', 'barangs')->get();
+        $sales = Sales::with('barangs', 'customers')->get();
+
+        return view('index', compact('salesdetail', 'sales'));
     }
 
     /**

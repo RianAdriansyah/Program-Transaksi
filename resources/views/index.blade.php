@@ -22,17 +22,19 @@
               </tr>
             </thead>
             <tbody>
+              @foreach ($salesdetail as $item)
               <tr>
-                <td>1</td>
-                <td>202101-0001</td>
-                <td>01-Jan-2021</td>
-                <td>Cust A</td>
-                <td>2</td>
-                <td>250.000</td>
-                <td>5000</td>
-                <td>15000</td>
-                <td>245.000</td>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item->sales->kode }}</td>
+                <td>{{ $item->sales->tgl }}</td>
+                <td>{{ $item->sales->customer_id }}</td>
+                <td>{{ $item->qty }}</td>
+                <td>{{ $item->sales->subtotal }}</td>
+                <td>{{ $item->sales->diskon }}</td>
+                <td>{{ $item->sales->ongkir }}</td>
+                <td>{{ $item->sales->total_bayar }}</td>
               </tr>
+              @endforeach
             </tbody>
             <tfoot>
               <tr>

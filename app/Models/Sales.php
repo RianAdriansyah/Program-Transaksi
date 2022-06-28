@@ -15,7 +15,11 @@ class Sales extends Model
         return $this->hasMany(SalesDetail::class);
     }
 
-    public function customer(){
-        return $this->belongsTo('App\Customer', 'customer_id');
+    public function customers(){
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function barangs(){
+        return $this->belongsTo(Barang::class, 'barang_id');
     }
 }

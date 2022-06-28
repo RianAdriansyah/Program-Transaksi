@@ -12,10 +12,11 @@ class SalesDetail extends Model
     protected $guarded = ['id'];
 
     public function sales(){
-        return $this->belongsTo('App\Sales', 'sales_id');
+        return $this->belongsTo(Sales::class, 'sales_id');
     }
 
-    public function barang(){
-        return $this->belongsTo('App\Barang', 'barang_id');
+    public function barangs(){
+        return $this->belongsTo(Barang::class, 'barang_id');
     }
+    
 }

@@ -101,12 +101,12 @@
                         </select>  
                         </td>
                         <td><input type="text" class="form-control" id="namabarang" name="namabarang" readonly></td>
-                        <td><input type="text" class="form-control" id="qty" name="qty"></td>
-                        <td><input type="text" class="form-control" id="hargabandrol" name="hargabarang" readonly></td>
-                        <td><input type="text" class="form-control" id="diskon_pct" name="diskon_pct"></td>
+                        <td><input type="text" class="form-control" id="qty" name="qty" oninput="hargatotal()"></td>
+                        <td><input type="text" class="form-control" id="hargabandrol" name="hargabandrol" readonly></td>
+                        <td><input type="text" class="form-control" id="diskon_pct" name="diskon_pct" oninput="harga_total()"></td>
                         <td><input type="text" class="form-control" id="diskon_rp" name="diskon_rp"></td>
                         <td><input type="text" class="form-control" id="hrgdiskon" name="hrgdiskon"></td>
-                        <td><input type="text" class="form-control" id="total" name="total"></td>
+                        <td><input type="text" class="form-control" id="total" name="total" readonly></td>
                       </tr>
                     </tbody>
                   </table>
@@ -120,22 +120,22 @@
                 <tr>
                   <th class="text-start">Subtotal</th>
                   <td>&nbsp : &nbsp</td>
-                  <td class="text-end"><input type="text" name="subtotal" id="" class="form-control text-end" style="height: 30px" readonly></td>
+                  <td class="text-end"><input type="text" name="subtotal" id="subtotal" oninput="hargatotal()" class="form-control text-end" style="height: 30px" readonly></td>
                 </tr>
                 <tr>
                   <th class="text-start">Diskon</th>
                   <td>&nbsp : &nbsp</td>
-                  <td class="text-end"><input type="text" name="diskon" id="" class="form-control text-end" style="height: 30px"></td>
+                  <td class="text-end"><input type="text" name="diskon" id="diskon" oninput="total_bayar()" class="form-control text-end" style="height: 30px"></td>
                 </tr>
                 <tr>
                   <th class="text-start">Ongkir</th>
                   <td>&nbsp : &nbsp</td>
-                  <td class="text-end"><input type="text" name="ongkir" id="" class="form-control text-end" style="height: 30px"></td>
+                  <td class="text-end"><input type="text" name="ongkir" id="ongkir" oninput="total_bayar()" class="form-control text-end" style="height: 30px"></td>
                 </tr>
                 <tr>
                   <th class="text-start">Total Bayar</th>
                   <td>&nbsp : &nbsp</td>
-                  <td class="text-end"><input type="text" name="total_bayar" id="" class="form-control text-end" style="height: 30px" readonly></td>                
+                  <td class="text-end"><input type="text" name="total_bayar" id="total_bayar" class="form-control text-end" style="height: 30px" readonly></td>                
                 </tr>
               </table>
             </div>
@@ -177,7 +177,7 @@
                       </div>                    
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Quantity</label>
-                        <input type="text" class="form-control" id="qty" name="ty">
+                        <input type="text" class="form-control" id="qty" name="qty" onchange="hargatotal()">
                       </div>    
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Harga Bandrol</label>
@@ -289,6 +289,83 @@
                       }
                     })
                   }
+
+          </script>
+
+          <script>
+
+          function total_bayar(){
+            var diskon = document.getElementById("diskon").value;
+            var ongkir = document.getElementById("ongkir").value;
+            var subtotal = document.getElementById('subtotal').value;
+            var totalbayar = parseInt(subtotal) - parseInt(diskon) - parseInt(ongkir);
+
+            if(!isNaN(totalbayar)){
+              document.getElementById("total_bayar").value=totalbayar;
+            }
+
+          }
+
+          // function diskon_pct(){
+          //   var rp = document.getElementById("diskon_rp").value;
+          //   var hargabandrol = document.getElementById('hargabandrol').value;
+          //   var rp = document.getElementById("hrg").value;
+
+          //   var pct = parseInt(hargabandrol) % parseInt(rp);
+
+          //   if(!isNaN(pct)){
+          //     document.getElementById("diskon_pct").value=pct;
+          //   }
+          // }
+
+          function harga_total(){
+            var pct = document.getElementById("diskon_pct").value;
+            var qty = document.getElementById("qty").value;
+            var bandrol = document.getElementById("hargabandrol").value;
+
+            var tanpadiskon = parseInt(bandrol) * parseInt(qty);
+
+            var diskonrp = parseInt(bandrol) * parseInt(pct) / 100;
+
+            var diskon = parseInt(bandrol) - parseInt(diskonrp);
+
+            var total = diskon * parseInt(qty);
+
+            if(diskonrp | diskon | total){
+              document.getElementById("diskon_rp").value=diskonrp;
+              document.getElementById("hrgdiskon").value=diskon;
+              document.getElementById("total").value=total;
+              document.getElementById("subtotal").value=total;
+            }
+            else{
+              document.getElementById("diskon_rp").value=0;
+              document.getElementById("hrgdiskon").value=0;
+              document.getElementById("total").value=tanpadiskon;
+              document.getElementById("subtotal").value=tanpadiskon;
+
+            }
+          }
+
+          // function hargatotal(){
+          //   var qty = document.getElementById('qty').value;
+          //   var pct = document.getElementById('diskon_pct').value;
+          //   var bandrol = document.getElementById('hargabandrol').value;
+          //   var subtotal = document.getElementById('subtotal').value;
+
+          //   // var diskonrp = parseInt(bandrol) * parseInt(pct) / 100;
+
+          //   // var diskon = parseInt(diskonrp) * parseInt(qty);
+            
+          //   var total = diskon * parseInt(qty);
+          //   // var subtotal = parseInt(qty) * parseInt(bandrol);
+
+          //   if(!isNaN(diskonrp | diskon | total)){
+              
+          //     document.getElementById("total").value=total;
+          //       // document.getElementById("subtotal").value=subtotal;
+          //     }
+
+          // }
 
           </script>
 

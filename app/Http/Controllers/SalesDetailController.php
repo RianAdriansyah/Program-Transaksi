@@ -16,7 +16,7 @@ class SalesDetailController extends Controller
      */
     public function index()
     {
-        $salesdetail = SalesDetail::with('sales', 'barangs')->get();
+        $salesdetail = SalesDetail::with('sales', 'barangs', 'customers')->latest()->get();
         $sales = Sales::with('barangs', 'customers')->get();
 
         return view('index', compact('salesdetail', 'sales'));

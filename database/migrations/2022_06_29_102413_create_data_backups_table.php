@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales_details', function (Blueprint $table) {
+        Schema::create('data_backups', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->double('harga_bandrol');
             $table->bigInteger('qty');
@@ -21,9 +21,13 @@ return new class extends Migration
             $table->double('diskon_nilai');
             $table->double('harga_diskon');
             $table->double('total');
-            $table->bigInteger('sales_id')->unsigned();
+            $table->double('subtotal');
+            $table->double('diskon');
+            $table->double('ongkir');
+            $table->double('total_bayar');
+            $table->bigInteger('sales_id')->unsigned()->nullable();
             $table->bigInteger('barang_id')->unsigned();
-            $table->bigInteger('customer_id')->unsigned();
+            $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->foreign('sales_id')->references('id')->on('sales');
             $table->foreign('barang_id')->references('id')->on('barangs');
             $table->foreign('customer_id')->references('id')->on('customers');
@@ -38,6 +42,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales_details');
+        Schema::dropIfExists('data_backups');
     }
 };

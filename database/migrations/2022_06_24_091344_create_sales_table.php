@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kode');
-            $table->dateTime('tgl');
+            $table->date('tgl');
             $table->double('subtotal');
             $table->double('diskon');
             $table->double('ongkir');

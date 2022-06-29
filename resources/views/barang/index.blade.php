@@ -57,7 +57,7 @@
                         <th>No</th>
                         <th>Kode</th>
                         <th>Nama</th>
-                        <th>Harga</th>
+                        <th class="text-end">Harga</th>
                         <th class="text-center">Aksi</th>
                       </tr>
                     </thead>
@@ -67,7 +67,7 @@
                         <td>{{ $loop->iteration++ }}</td>
                         <td>{{ $list->kode }}</td>
                         <td>{{ $list->nama }}</td>
-                        <td>{{ $list->harga }}</td>
+                        <td class="text-end">Rp{{ number_format($list->harga) }}</td>
                         <td class="text-center">
                             {{-- <a href="" id="editdata" data-bs-toggle="modal" data-bs-target="#ubahbarang" class="btn btn-sm btn-primary">Edit</a> --}}
 
@@ -148,6 +148,25 @@
           modal.find('#harga').val(harga);
           modal.find('#id_brg').val(id_brg);
         })
+
+        function simpan(){
+          var kode = $("#kode").val();
+          var nama = $("#nama").val();
+          var harga = $("#harga").val();
+
+          // $.ajax({
+          //   type: "post",
+          //   url: {{ url('barang/store') }},
+          //   data: {
+          //     "kode" : kode,
+          //     "nama" : nama,
+          //     "harga" : harga
+          //   },
+          //   success: function(data){
+              
+          //   }
+          // })
+        }
 </script>
 
 

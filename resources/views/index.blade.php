@@ -22,24 +22,26 @@
               </tr>
             </thead>
             <tbody>
+              <?php $grandtotal = 0; ?>
               @foreach ($salesdetail as $item)
+              <?php $grandtotal += $item->sales->total_bayar; ?>
               <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->sales->kode }}</td>
                 <td>{{ $item->sales->tgl }}</td>
-                <td>{{ $item->sales->customer_id }}</td>
-                <td>{{ $item->qty }}</td>
-                <td>{{ $item->sales->subtotal }}</td>
-                <td>{{ $item->sales->diskon }}</td>
-                <td>{{ $item->sales->ongkir }}</td>
-                <td>{{ $item->sales->total_bayar }}</td>
+                <td>{{ $item->customers->nama }}</td>
+                <td>{{ $item->qty }} -- {{ $item->barangs->nama }}</td>
+                <td>Rp{{ number_format($item->sales->subtotal) }}</td>
+                <td>Rp{{ number_format($item->sales->diskon) }}</td>
+                <td>Rp{{ number_format($item->sales->ongkir) }}</td>
+                <td>Rp{{ number_format($item->sales->total_bayar) }}</td>
               </tr>
               @endforeach
             </tbody>
             <tfoot>
               <tr>
                 <th colspan="6" class="text-end">Grand Total</th>
-                <th colspan="3" class="text-end">60000</th>
+                <th colspan="3" class="text-end">Rp{{ number_format($grandtotal) }}</th>
               </tr>
             </tfoot>
           </table>

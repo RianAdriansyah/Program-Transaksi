@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Sales;
 use App\Models\Customer;
+use App\Models\DataBackup;
 use App\Models\SalesDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use League\CommonMark\Extension\Table\TableRow;
 
 class SalesController extends Controller
 {
@@ -19,10 +21,11 @@ class SalesController extends Controller
     public function index()
     {
         $sales = Sales::with('customers', 'barangs')->get();
+        $databackup = DataBackup::with('customers', 'barangs')->latest()->get();
         $customer = Customer::all();
         $barang = Barang::all();
 
-        return view('formulir', compact('sales', 'customer', 'barang'));
+        return view('formulir', compact('sales', 'customer', 'barang', 'databackup'));
     }
 
     /**
@@ -44,6 +47,7 @@ class SalesController extends Controller
     public function store(Request $request)
     {
         // $formattgl = Carbon::createFromFormat('d-m-Y', $request->tgl);
+        // dd($request->all());
 
         $sales = new Sales;
         $sales->kode = $request->no;
@@ -56,18 +60,34 @@ class SalesController extends Controller
 
         $sales->save();
 
-        $salesdetail = new SalesDetail;
-        $salesdetail->harga_bandrol = $request->hargabandrol;
-        $salesdetail->qty = $request->qty;
-        $salesdetail->diskon_pct = $request->diskon_pct;
-        $salesdetail->diskon_nilai = $request->diskon_rp;
-        $salesdetail->harga_diskon = $request->hrgdiskon;
-        $salesdetail->total = $request->total;
-        $salesdetail->sales_id = $sales->id;
-        $salesdetail->barang_id = $request->barang_id;
-        $salesdetail->save();
+        $harga= $request->hargabandrol;
+        $qty= $request->qty;
+        $pct= $request->diskon_pct;
+        $rp= $request->diskon_rp;
+        $hrg= $request->hrgdiskon;
+        $ttl= $request->total;
+        $barangid= $request->barang_id;
+        $salesid= $sales->id;
+        $cstmr= $request->customer_id;
+        
+        for ($i=0; $i < count($barangid); $i++) { 
+            # code...
+            $salesdetail = new SalesDetail;
+            $salesdetail->harga_bandrol = $harga[$i];
+            $salesdetail->qty = $qty[$i];
+            $salesdetail->diskon_pct = $pct[$i];
+            $salesdetail->diskon_nilai = $rp[$i];
+            $salesdetail->harga_diskon = $hrg[$i];
+            $salesdetail->total = $ttl[$i];
+            $salesdetail->barang_id = $barangid[$i];
+            $salesdetail->sales_id = $salesid;
+            $salesdetail->customer_id = $cstmr;
+            $salesdetail->save();
+        }
 
-        return redirect('formulir');
+        $backup = DataBackup::delete();
+
+        return redirect('formulir')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**
@@ -112,7 +132,10 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $backup = DataBackup::findOrFail($id);
+        $backup->delete();
+
+        return redirect('formulir')->with('success', 'Data berhasil dihapus!');
     }
 
     public function tampilCustomer(Request $request){
@@ -131,5 +154,26 @@ class SalesController extends Controller
             'nama' => $barang->nama,
             'harga' => $barang->harga
         ]);
+    }
+
+    public function createBackup(Request $request)
+    {
+        $databackup = new DataBackup;
+        $databackup->harga_bandrol = $request->hargabandrol;
+        $databackup->qty = $request->qty;
+        $databackup->diskon_pct = $request->diskon_pct;
+        $databackup->diskon_nilai = $request->diskon_rp;
+        $databackup->harga_diskon = $request->hrgdiskon;
+        $databackup->total = $request->total;
+        $databackup->subtotal = $request->subtotal;
+        $databackup->diskon = $request->diskon;
+        $databackup->ongkir = $request->ongkir;
+        $databackup->total_bayar = $request->total_bayar;
+        // $databackup->sales_id = $sales->id;
+        $databackup->barang_id = $request->barang_id;
+        $databackup->customer_id = $request->customer_id;
+        $databackup->save();
+
+        return redirect('formulir');
     }
 }

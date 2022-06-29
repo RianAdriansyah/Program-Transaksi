@@ -52,6 +52,17 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-lg-12 mt-3">
+
+          @if (session()->has('success'))
+          <div class="alert alert-success" role="alert">
+              {{ session('success') }}
+          </div>
+          @endif
+        </div>
+      </div>
+  
     </section>
 
     {{-- TABEL --}}
@@ -69,7 +80,7 @@
                   <table class="table table-bordered" id="tabel1">
                     <thead>
                       <tr>
-                          <th scope="col" rowspan="2" colspan="1" class="align-middle text-center"><a class="btn btn-sm btn-primary" id="tambah"><i class="bi bi-plus"></i></a></th>
+                          {{-- <th scope="col" rowspan="2" colspan="1" class="align-middle text-center"><a class="btn btn-sm btn-primary" id="tambah"><i class="bi bi-plus"></i></a></th> --}}
                           <th scope="col" rowspan="2" class="align-middle">No</th>
                           <th scope="col" rowspan="2" class="align-middle">Kode Barang</th>
                           <th scope="col" rowspan="2" class="align-middle">Nama Barang</th>
@@ -78,6 +89,7 @@
                           <th scope="col" colspan="2" class="text-center">Diskon</th>
                           <th scope="col" rowspan="2" class="align-middle">Harga Diskon</th>
                           <th scope="col" rowspan="2" class="align-middle">Total</th>
+                          <th scope="col" rowspan="2" class="align-middle">Aksi</th>
                       </tr>
                       <tr class="text-center">
                           <th scope="col">(%)</th>
@@ -85,6 +97,49 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <?php $subtotal = 0; ?>
+                      @foreach ($databackup as $item)
+                      <?php $subtotal += $item->total; ?>
+                      <tr>
+                      <td>{{ $loop->iteration }}</td>
+                        <td>
+                          <input type="hidden" value="{{ $item->barang_id }}" name="barang_id[]">
+                          <input type="hidden" name="id" value="">
+                          <input type="text" class="form-control" name="" id="" value="{{ $item->barangs->kode }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="" id="" value="{{ $item->barangs->nama }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="qty[]" id="" value="{{ $item->qty }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="hargabandrol[]" id="" value="{{ $item->harga_bandrol }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="diskon_pct[]" id="" value="{{ $item->diskon_pct }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="diskon_rp[]" id="" value="{{ $item->diskon_nilai }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="hrgdiskon[]" id="" value="{{ $item->harga_diskon }}" readonly>
+                        </td> 
+                        <td>
+                          <input type="text" class="form-control" name="total[]" id="totalawal" value="{{ $item->total }}" readonly>
+                        </td> 
+                        <td>
+                          {{-- <a href="">Edit</a> --}}
+                          <form action="/formulir/{{ $item->id }}" method="POST" class="d-inline border-0">
+                          @method('delete')
+                          @csrf
+                          <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin?')"><i class="bi bi-trash"></i></button>
+                        </form>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                    {{-- <tbody>
                       <tr>
                         <td class="text-center"><button class="btn btn-sm btn-danger" id="hapus"><i class="bi bi-trash"></i></button></td>
                         <input type="hidden" name="id" value="">
@@ -105,34 +160,34 @@
                         <td><input type="text" class="form-control" id="hrgdiskon" name="hrgdiskon"></td>
                         <td><input type="text" class="form-control" id="total" name="total" readonly></td>
                       </tr>
-                    </tbody>
+                    </tbody>--}}
                   </table>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-11 d-flex justify-content-end">
+            <div class="col-lg-12 d-flex justify-content-end">
               <table>
                   {{ csrf_field() }}
                   <tr>
                     <th class="text-start">Subtotal</th>
                     <td>&nbsp : &nbsp</td>
-                    <td class="text-end"><input type="text" name="subtotal" id="subtotal" class="form-control text-end" style="height: 30px" readonly></td>
+                    <td class="text-end"><input type="text" name="subtotal" id="subtotalakhir" class="form-control text-end" style="height: 30px" onclick="total_akhir()" value="{{ $subtotal }}" readonly></td>
                   </tr>
                   <tr>
                     <th class="text-start">Diskon</th>
                     <td>&nbsp : &nbsp</td>
-                    <td class="text-end"><input type="text" name="diskon" id="diskon" oninput="bayar()" class="form-control text-end" style="height: 30px"></td>
+                    <td class="text-end"><input type="text" name="diskon" id="diskonakhir" oninput="bayar_akhir()" class="form-control text-end" style="height: 30px"></td>
                   </tr>
                   <tr>
                     <th class="text-start">Ongkir</th>
                     <td>&nbsp : &nbsp</td>
-                    <td class="text-end"><input type="text" name="ongkir" id="ongkir" oninput="bayar()" class="form-control text-end" style="height: 30px"></td>
+                    <td class="text-end"><input type="text" name="ongkir" id="ongkirakhir" oninput="bayar_akhir()" class="form-control text-end" style="height: 30px"></td>
                   </tr>
                   <tr>
                     <th class="text-start">Total Bayar</th>
                     <td>&nbsp : &nbsp</td>
-                    <td class="text-end"><input type="text" name="total_bayar" id="total_bayar" class="form-control text-end" style="height: 30px" readonly></td>                
+                    <td class="text-end"><input type="text" name="total_bayar" id="total_bayarakhir" class="form-control text-end" style="height: 30px" readonly></td>                
                   </tr>
                 </table>
               </div>
@@ -148,7 +203,7 @@
       </section>
 
       <!-- Modal -->
-      <div class="modal fade" id="modaltambah" tabindex="-1" aria-labelledby="ubahcust" aria-hidden="true">
+      <div class="modal fade" id="modaltambah" tabindex="-1" aria-labelledby="modaltambah" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -158,7 +213,7 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-lg-6">
-                    <form action="" method="POST">
+                    <form action="formulir/createBackup" method="POST">
                         {{ csrf_field() }}
                       <div class="mb-3">
                           <label for="kode" class="form-label">Kode Barang</label>
@@ -171,22 +226,22 @@
                       </div>
                       <div class="mb-3">
                         <label for="nama" class="form-label">Nama Barang</label>
-                        <input type="text" class="form-control" id="namabarang" name="" readonly>
+                        <input type="text" class="form-control" id="namabarang" name="namabarang" readonly>
                       </div>                    
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Quantity</label>
-                        <input type="text" class="form-control" id="qty" name="qty" onchange="hargatotal()">
+                        <input type="text" class="form-control" id="qty" name="qty" oninput="harga_total()">
                       </div>    
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Harga Bandrol</label>
-                        <input type="text" class="form-control" id="hargabandrol" name="" readonly>
+                        <input type="text" class="form-control" id="hargabandrol" name="hargabandrol" readonly>
                       </div>
                     </div>
                     <div class="col-lg-6">
                          
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Diskon (%)</label>
-                        <input type="text" class="form-control" id="diskon_pct" name="diskon_pct">
+                        <input type="text" class="form-control" id="diskon_pct" oninput="harga_total()" name="diskon_pct">
                       </div>    
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Diskon (Rp)</label>
@@ -198,11 +253,39 @@
                       </div>    
                       <div class="mb-3">
                         <label for="telepon" class="form-label">Total</label>
-                        <input type="text" class="form-control" id="total" name="total">
+                        <input type="text" class="form-control" id="total" name="total" readonly>
                       </div>    
                     </div>
                   </div>
+                  <div class="row justify-content-end">
+                    <div class="col-lg-6">
+                      <table>
+                        {{ csrf_field() }}
+                        <tr>
+                          <th class="text-start">Subtotal</th>
+                          <td>&nbsp : &nbsp</td>
+                          <td class="text-end"><input type="text" name="subtotal" id="subtotal" class="form-control text-end" style="height: 30px" readonly></td>
+                        </tr>
+                        <tr>
+                          <th class="text-start">Diskon</th>
+                          <td>&nbsp : &nbsp</td>
+                          <td class="text-end"><input type="text" name="diskon" id="diskon" oninput="bayar()" class="form-control text-end" style="height: 30px"></td>
+                        </tr>
+                        <tr>
+                          <th class="text-start">Ongkir</th>
+                          <td>&nbsp : &nbsp</td>
+                          <td class="text-end"><input type="text" name="ongkir" id="ongkir" oninput="bayar()" class="form-control text-end" style="height: 30px"></td>
+                        </tr>
+                        <tr>
+                          <th class="text-start">Total Bayar</th>
+                          <td>&nbsp : &nbsp</td>
+                          <td class="text-end"><input type="text" name="total_bayar" id="total_bayar" class="form-control text-end" style="height: 30px" readonly></td>                
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
                 </div>
+                
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary" id="submit">Simpan</button>
@@ -245,32 +328,32 @@
 
           <script>
             
-            $(document).ready(function(){
-              let baris = 1
+            // $(document).ready(function(){
+            //   let baris = 1
             
-              $(document).on('click', '#tambah', function (){
-                baris = baris + 1
-                var html = "<tr id='baris'" +baris+ ">"
-                  html += "<td><button data-row='baris'"+baris+" class='btn btn-sm btn-danger' id='hapus'><i class='bi bi-trash'></i></button></td>"
-                    html +="<td>"+baris+"</td>"
-                    html += "<td><select name='barang_id' id='barang_id' class='form-control' onchange='pilih_barang()'><option value=''>-- Pilih Barang --</option>@foreach($barang as $data)<option value='{{ $data->id }}'>{{ $data->kode }} -- {{ $data->nama }}</option>@endforeach</select>  </td>"
-                    html += "<td><input type='text' class='form-control' id='namabarang' name='namabarang' readonly></td>"
-                    html += "<td><input type='text' class='form-control' id='qty' name='qty'></td>"
-                    html += "<td><input type='text' class='form-control' id='hargabandrol' name='hargabandrol' readonly></td>"
-                    html += "<td><input type='text' class='form-control' id='diskon-pct' name='diskon_pct'></td>"
-                    html += "<td><input type='text' class='form-control' id='diskon_rp' name='diskon_rp'></td>"
-                    html += "<td><input type='text' class='form-control' id='hrgdiskon' name='hrgdiskon'></td>"
-                    html += "<td><input type='text' class='form-control' id='total' name='total'></td>"
-                    html += "</tr>"
+            //   $(document).on('click', '#tambah', function (){
+            //     baris = baris + 1
+            //     var html = "<tr id='baris'" +baris+ ">"
+            //       html += "<td><button data-row='baris'"+baris+" class='btn btn-sm btn-danger' id='hapus'><i class='bi bi-trash'></i></button></td>"
+            //         html +="<td>"+baris+"</td>"
+            //         html += "<td><select name='barang_id' id='barang_id' class='form-control' onchange='pilih_barang()'><option value=''>-- Pilih Barang --</option>@foreach($barang as $data)<option value='{{ $data->id }}'>{{ $data->kode }} -- {{ $data->nama }}</option>@endforeach</select>  </td>"
+            //         html += "<td><input type='text' class='form-control' id='namabarang' name='namabarang' readonly></td>"
+            //         html += "<td><input type='text' class='form-control' id='qty' name='qty'></td>"
+            //         html += "<td><input type='text' class='form-control' id='hargabandrol' name='hargabandrol' readonly></td>"
+            //         html += "<td><input type='text' class='form-control' id='diskon-pct' name='diskon_pct'></td>"
+            //         html += "<td><input type='text' class='form-control' id='diskon_rp' name='diskon_rp'></td>"
+            //         html += "<td><input type='text' class='form-control' id='hrgdiskon' name='hrgdiskon'></td>"
+            //         html += "<td><input type='text' class='form-control' id='total' name='total'></td>"
+            //         html += "</tr>"
             
-                    $('#tabel1').append(html)
-              })
-            })
+            //         $('#tabel1').append(html)
+            //   })
+            // })
 
-            $(document).on('click', '#hapus', function (){
-              let hapus = $(this).data('row')
-              $(this).parent().parent().remove()
-            })
+            // $(document).on('click', '#hapus', function (){
+            //   let hapus = $(this).data('row')
+            //   $(this).parent().parent().remove()
+            // })
 
           function pilih_barang(){
             var barang_id = $("#barang_id").val();
@@ -327,6 +410,44 @@
 
             }
           }
+
+          function total_akhir(){
+            var total = document.getElementById("totalawal").value;
+            var subtotal = 0;
+            // var subtotal = document.getElementById("subtotalakhir");
+
+            for(i = 0 ; i <= total.length ; i++){
+              subtotal += total[i];
+              console.log(total[i]);
+
+            }
+
+          }
+          function bayar_akhir(){
+            var diskon = document.getElementById("diskonakhir").value;
+            var ongkir = document.getElementById("ongkirakhir").value;
+            var subtotal = document.getElementById("subtotalakhir").value;
+            var totalbayar = parseInt(subtotal) - parseInt(diskon) - parseInt(ongkir);
+
+            if(!isNaN(totalbayar)){
+              document.getElementById("total_bayarakhir").value=totalbayar;
+            }
+          }
+
+          // $.ajax({
+          //   url: "{{ url('formulir/store') }}",
+          //   type: "post",
+          //   data: {
+          //     barang_id : barang_id,
+          //     "_token" : "{{ csrf_token() }}"
+          //   },
+          //   success: function (res) {
+          //     console.log(res);
+          //   },
+          //   error: function (xhr) {
+          //     console.error(xhr);
+          //   }
+          // })
 
           // function hargatotal(){
           //   var qty = document.getElementById('qty').value;

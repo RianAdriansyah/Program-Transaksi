@@ -18,6 +18,7 @@ class SalesDetail extends Model
     public function barangs(){
         return $this->belongsTo(Barang::class, 'barang_id');
     }
+    
     public function customers(){
         return $this->belongsTo(Customer::class, 'customer_id');
     }

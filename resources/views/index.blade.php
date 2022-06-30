@@ -29,7 +29,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->sales->kode }}</td>
                 <td>{{ $item->sales->tgl }}</td>
-                <td>{{ $item->customers->nama }}</td>
+                <td>{{ $item->sales->customers->nama }}</td>
                 <td>{{ $item->qty }} -- {{ $item->barangs->nama }}</td>
                 <td>Rp{{ number_format($item->sales->subtotal) }}</td>
                 <td>Rp{{ number_format($item->sales->diskon) }}</td>

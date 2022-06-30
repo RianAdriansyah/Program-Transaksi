@@ -42,6 +42,8 @@ Route::resource('/', SalesDetailController::class);
 Route::post('/formulir/tampilCustomer', [SalesController::class, 'tampilCustomer']);
 Route::post('/formulir/tampilBarang', [SalesController::class, 'tampilBarang']);
 Route::post('/formulir/createBackup', [SalesController::class, 'createBackup']);
+Route::post('/formulir/updateBackup/{id}', [SalesController::class, 'updateBackup']);
+Route::delete('/formulir/deletebackup/{id}', [SalesController::class, 'deletebackup']);
 
 
 // Route::get('/customer', function () {

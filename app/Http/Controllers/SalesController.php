@@ -9,6 +9,7 @@ use App\Models\DataBackup;
 use App\Models\SalesDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use League\CommonMark\Extension\Table\TableRow;
 
 class SalesController extends Controller
@@ -21,11 +22,13 @@ class SalesController extends Controller
     public function index()
     {
         $sales = Sales::with('customers', 'barangs')->get();
-        $databackup = DataBackup::with('customers', 'barangs')->latest()->get();
+        $databackup = DataBackup::with('customers', 'barangs')->get();
         $customer = Customer::all();
         $barang = Barang::all();
 
-        return view('formulir', compact('sales', 'customer', 'barang', 'databackup'));
+        $salesno = Sales::count();
+
+        return view('formulir', compact('sales', 'customer', 'barang', 'databackup', 'salesno'));
     }
 
     /**
@@ -47,7 +50,16 @@ class SalesController extends Controller
     public function store(Request $request)
     {
         // $formattgl = Carbon::createFromFormat('d-m-Y', $request->tgl);
-        // dd($request->all());
+
+        $rules = $request->validate([
+            'kode' => 'required|unique:sales',
+            'tgl' => 'required',
+            'customer_id' => 'required',
+            'subtotal' => 'required|numeric',
+            'diskon' => 'required|numeric',
+            'ongkir' => 'required|numeric',
+            'total_bayar' => 'required|numeric'
+        ]);
 
         $sales = new Sales;
         $sales->kode = $request->no;
@@ -58,7 +70,7 @@ class SalesController extends Controller
         $sales->ongkir = $request->ongkir;
         $sales->total_bayar = $request->total_bayar;
 
-        $sales->save();
+        $sales->save($rules);
 
         $harga= $request->hargabandrol;
         $qty= $request->qty;
@@ -85,7 +97,7 @@ class SalesController extends Controller
             $salesdetail->save();
         }
 
-        $backup = DataBackup::delete();
+        // $backup = DataBackup::delete();
 
         return redirect('formulir')->with('success', 'Data berhasil ditambahkan!');
     }
@@ -132,10 +144,10 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        $backup = DataBackup::findOrFail($id);
-        $backup->delete();
+        // $databackup = DataBackup::findOrFail($id);
+        // $databackup->delete();
 
-        return redirect('formulir')->with('success', 'Data berhasil dihapus!');
+        // return redirect('formulir')->with('success', 'Data berhasil dihapus!');
     }
 
     public function tampilCustomer(Request $request){
@@ -174,6 +186,56 @@ class SalesController extends Controller
         $databackup->customer_id = $request->customer_id;
         $databackup->save();
 
-        return redirect('formulir');
+        return redirect('formulir')->with('success', 'Barang berhasil ditambahkan!');
+    }
+    public function updateBackup(Request $request, $id)
+    {
+        $data = DataBackup::findOrFail($request->id_data);
+
+        $data = $request->validate([
+            'harga_bandrol' => 'required',
+            'qty' => 'required',
+            'diskon_pct' => 'required',
+            'diskon_nilai' => 'required',
+            'harga_diskon' => 'required',
+            'total' => 'required',
+            'subtotal' => 'required',
+            'diskon' => 'required',
+            'ongkir' => 'required',
+            'total_bayar' => 'required',
+            'barang_id' => 'required'
+        ]);
+
+        // $databackup->harga_bandrol = $request->hargabandrol;
+        // $databackup->qty = $request->qty;
+        // $databackup->diskon_pct = $request->diskon_pct;
+        // $databackup->diskon_nilai = $request->diskon_rp;
+        // $databackup->harga_diskon = $request->hrgdiskon;
+        // $databackup->total = $request->total;
+        // $databackup->subtotal = $request->subtotal;
+        // $databackup->diskon = $request->diskon;
+        // $databackup->ongkir = $request->ongkir;
+        // $databackup->total_bayar = $request->total_bayar;
+        // // $databackup->sales_id = $sales->id;
+        // $databackup->barang_id = $request->barang_id;
+        // $databackup->customer_id = $request->customer_id;
+        // $databackup->save();
+
+        DB::table('data_backups')->where('id', $request->id_data)->update($data);
+
+        return redirect('formulir')->with('success', 'Barang berhasil diupdate!');
+    }
+
+    public function deletebackup(DataBackup $databackup, $id){
+
+        $databackup = DataBackup::find(request('id'));
+        // $databackup = DataBackup::findOrFail($databackup->id);
+        $databackup->delete();
+
+        return response()->json([
+        'id' => $databackup->id
+    ]);
+
+        return redirect('formulir')->with('success', 'Data berhasil dihapus!');
     }
 }

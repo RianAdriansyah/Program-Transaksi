@@ -131,19 +131,19 @@
       </div>
 
       <script>
-        $('#editcustomer').on('show.bs.modal', function (event){
-          var button = $(event.relatedTarget);
-          var kode = button.data('mykode');
-          var nama = button.data('mynama');
-          var telp = button.data('mytelp');
-          var id_cust = button.data('id_cust');
+          $('#editcustomer').on('show.bs.modal', function (event){
+            var button = $(event.relatedTarget);
+            var kode = button.data('mykode');
+            var nama = button.data('mynama');
+            var telp = button.data('mytelp');
+            var id_cust = button.data('id_cust');
 
-          var modal = $(this)
-          modal.find('#kode').val(kode);
-          modal.find('#nama').val(nama);
-          modal.find('#telp').val(telp);
-          modal.find('#id_cust').val(id_cust);
-        })
+            var modal = $(this)
+            modal.find('#kode').val(kode);
+            modal.find('#nama').val(nama);
+            modal.find('#telp').val(telp);
+            modal.find('#id_cust').val(id_cust);
+          })
       </script>
 
   @endsection

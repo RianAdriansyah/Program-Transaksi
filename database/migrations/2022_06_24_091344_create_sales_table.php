@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kode');
+            $table->string('kode')->unique();
             $table->date('tgl');
             $table->double('subtotal');
             $table->double('diskon');

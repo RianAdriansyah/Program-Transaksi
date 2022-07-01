@@ -16,7 +16,12 @@
                         <select name="barang_id" id="barang_id2" class="form-control @error ('barang_id') is-invalid @enderror" onchange="pilih_barang2()">
                           <option value="">-- Pilih Barang --</option>
                           @foreach($barang as $data)
-                          <option value="{{ $data->id }}">{{ $data->kode }} -- {{ $data->nama }}</option>
+                          @if (old('barang_id', $databackup->barang_id) == $data->id)
+                          <option value="{{ $data->id }}" selected>{{ $data->kode }} -- {{ $data->nama }}</option>
+                          @else
+                          <option value="{{ $data->id }}">{{ $data->kode }} -- {{ $data->nama }}</option>    
+                          @endif
+                          {{-- <option value="{{ $data->id }}">{{ $data->kode }} -- {{ $data->nama }}</option> --}}
                           @endforeach
                         </select>  
                          @error('barang_id')

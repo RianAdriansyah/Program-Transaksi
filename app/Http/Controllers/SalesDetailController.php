@@ -19,8 +19,10 @@ class SalesDetailController extends Controller
         $salesdetail = SalesDetail::with('sales', 'barangs', 'customers')->latest()->get();
         $sales = Sales::with('barangs', 'customers')->get();
 
-        return view('index', compact('salesdetail', 'sales'));
+        return view('salesdetail.index', compact('salesdetail', 'sales'));
     }
+
+   
 
     /**
      * Show the form for creating a new resource.
@@ -51,7 +53,7 @@ class SalesDetailController extends Controller
      */
     public function show($id)
     {
-        //
+     
     }
 
     /**

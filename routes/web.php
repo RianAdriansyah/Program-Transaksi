@@ -18,34 +18,17 @@ use App\Http\Controllers\SalesDetailController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('index');
-// });
-// Route::get('/formulir', function () {
-//     return view('formulir');
-// });
-
-// Route::resource('/barang', 'BarangController');
-
-// Route::get('/barang', [BarangController::class, 'index']);
-// Route::post('/barang', [BarangController::class, 'store']);
-
-// Route::get('/customer', [CustomerController::class, 'index']);
-// Route::post('/customer', [CustomerController::class, 'store']);
 
 Route::resource('/barang', BarangController::class);
 Route::resource('/customer', CustomerController::class);
 Route::resource('/formulir', SalesController::class);
 Route::resource('/', SalesDetailController::class);
-// Route::post('/formulir/tampilcustomer','SalesController@tampilcustomer');
+
 
 Route::post('/formulir/tampilCustomer', [SalesController::class, 'tampilCustomer']);
 Route::post('/formulir/tampilBarang', [SalesController::class, 'tampilBarang']);
 Route::post('/formulir/createBackup', [SalesController::class, 'createBackup']);
-Route::post('/formulir/updateBackup/{id}', [SalesController::class, 'updateBackup']);
+Route::put('/formulir/updateBackup/{id}', [SalesController::class, 'updateBackup']);
 Route::delete('/formulir/deletebackup/{id}', [SalesController::class, 'deletebackup']);
 
 
-// Route::get('/customer', function () {
-//     return view('customer');
-// });

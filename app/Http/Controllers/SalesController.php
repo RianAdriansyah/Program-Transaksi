@@ -49,17 +49,19 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
         // $formattgl = Carbon::createFromFormat('d-m-Y', $request->tgl);
 
-        $rules = $request->validate([
-            'kode' => 'required|unique:sales',
-            'tgl' => 'required',
-            'customer_id' => 'required',
-            'subtotal' => 'required|numeric',
-            'diskon' => 'required|numeric',
-            'ongkir' => 'required|numeric',
-            'total_bayar' => 'required|numeric'
-        ]);
+        // $rules = $request->validate([
+        //     'kode' => 'required',
+        //     'tgl' => 'required',
+        //     'customer_id' => 'required',
+        //     'subtotal' => 'required|numeric',
+        //     'diskon' => 'required|numeric',
+        //     'ongkir' => 'required|numeric',
+        //     'total_bayar' => 'required|numeric'
+        // ]);
 
         $sales = new Sales;
         $sales->kode = $request->no;
@@ -70,7 +72,7 @@ class SalesController extends Controller
         $sales->ongkir = $request->ongkir;
         $sales->total_bayar = $request->total_bayar;
 
-        $sales->save($rules);
+        $sales->save();
 
         $harga= $request->hargabandrol;
         $qty= $request->qty;
@@ -81,6 +83,8 @@ class SalesController extends Controller
         $barangid= $request->barang_id;
         $salesid= $sales->id;
         $cstmr= $request->customer_id;
+
+        
         
         for ($i=0; $i < count($barangid); $i++) { 
             # code...
@@ -96,7 +100,6 @@ class SalesController extends Controller
             $salesdetail->customer_id = $cstmr;
             $salesdetail->save();
         }
-
         // $backup = DataBackup::delete();
 
         return redirect('formulir')->with('success', 'Data berhasil ditambahkan!');
@@ -229,7 +232,6 @@ class SalesController extends Controller
     public function deletebackup(DataBackup $databackup, $id){
 
         $databackup = DataBackup::find(request('id'));
-        // $databackup = DataBackup::findOrFail($databackup->id);
         $databackup->delete();
 
         return response()->json([

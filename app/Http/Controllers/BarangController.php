@@ -84,7 +84,7 @@ class BarangController extends Controller
         // $request->id_barang BERASAL DARI INPUT HIDDEN
 
         $data = $request->validate([
-            'kode' => "required|unique:customers",
+            'kode' => "required|unique:customers|unique:barangs",
             'nama' => "required|max:255",
             'harga' => 'required|numeric'
         ]);

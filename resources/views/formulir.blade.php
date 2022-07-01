@@ -100,7 +100,7 @@
                       }
                   </style>
 
-                  <table class="table table-bordered table-striped" id="datatables">
+                  <table class="table table-bordered table-striped" id="">
                     <thead>
                       <tr>
                           {{-- <th scope="col" rowspan="2" colspan="1" class="align-middle text-center"><a class="btn btn-sm btn-primary" id="tambah"><i class="bi bi-plus"></i></a></th> --}}
@@ -119,15 +119,15 @@
                           <th scope="col">(Rp)</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="data-barang">
                       <?php $subtotal = 0; ?>
                       @foreach ($databackup as $item)
                       <?php $subtotal += $item->total; ?>
                       <tr>
-                        <input type="hidden" value="{{ $item->barang_id }}" name="barang_id[]">
-                        <input type="hidden" name="id" value="{{ $item->id }}">
-                      <td>{{ $loop->iteration }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>
+                          <input type="hidden" value="{{ $item->barang_id }}" name="barang_id[]">
+                          <input type="hidden" name="id" value="">
                           <input type="text" class="form-control" name="" id="" value="{{ $item->barangs->kode }}" readonly>
                         </td> 
                         <td>
@@ -167,38 +167,12 @@
                             data-myongkir="{{ $item->ongkir }}"
                             data-mytotalbayar="{{ $item->total_bayar }}"
                             data-mybarang="{{ $item->barang_id }}"><i class="bi bi-pencil-square"></i></button>                          
-                        {{-- <form action="/formulir/{{ $item->id }}" method="POST" class="d-inline border-0">
-                          @csrf
-                          @method('delete')
-                          <button class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin?')"><i class="bi bi-trash"></i></button>
-                        </form> --}}
                         <button id="hapusbarang" class="btn btn-sm btn-danger mx-1" type="button" data-myid="{{ $item->id }}"><i class="bi bi-trash"></i></button>
                         </td>
                       </tr>
                       @endforeach
                     </tbody>
-                    {{-- <tbody>
-                      <tr>
-                        <td class="text-center"><button class="btn btn-sm btn-danger" id="hapus"><i class="bi bi-trash"></i></button></td>
-                        <input type="hidden" name="id" value="">
-                        <td>1</td>
-                        <td>
-                          <select name="barang_id" id="barang_id" class="form-control" onchange="pilih_barang()">
-                          <option value="">-- Pilih Barang --</option>
-                          @foreach($barang as $data)
-                          <option value="{{ $data->id }}">{{ $data->kode }} -- {{ $data->nama }}</option>
-                          @endforeach
-                        </select>  
-                        </td>
-                        <td><input type="text" class="form-control" id="namabarang" name="namabarang" readonly></td>
-                        <td><input type="text" class="form-control" id="qty" name="qty" oninput="harga_total()"></td>
-                        <td><input type="text" class="form-control" id="hargabandrol" name="hargabandrol" readonly></td>
-                        <td><input type="text" class="form-control" id="diskon_pct" name="diskon_pct" oninput="harga_total()"></td>
-                        <td><input type="text" class="form-control" id="diskon_rp" name="diskon_rp"></td>
-                        <td><input type="text" class="form-control" id="hrgdiskon" name="hrgdiskon"></td>
-                        <td><input type="text" class="form-control" id="total" name="total" readonly></td>
-                      </tr>
-                    </tbody>--}}
+                    
                   </table>
             </div>
           </div>
@@ -344,11 +318,10 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-lg-6">
-                    <form action="{{url('formulir/updateBackup')}}" method="POST">
-                      @method('patch')
+                    <form action="formulir/updateBackup/{{ $data->id }}" method="POST">
+                      @method('put')
                       @csrf
                       <input type="hidden" name="id_data" value="" name="id">
-                        {{-- <input type="hidden" name="_method" id="PATCH"> --}}
                       <div class="mb-3">
                           <label for="kode" class="form-label">Kode Barang</label>
                         <select name="barang_id" id="barang_id2" class="form-control" onchange="pilih_barang2()">
@@ -444,7 +417,11 @@
           // $("#no").val(e.target.value.replace("-", ""))
           // })
 
-          $("#hapusbarang").click(function(){
+          // HAPUS BARANG
+
+          $("#data-barang").on("click", "#hapusbarang", function (e){
+            e.preventDefault();
+
               var id = $(this).data("myid");
               var token = $("meta[name='csrf-token']").attr("content");
             
@@ -459,14 +436,14 @@
                   },
                   success: function (response){
                       console.log(response);
-                      location.reload();
+                        location.reload();
                   },
                   error: function(xhr){
                     console.log(xhr.responseText);
                   }
               });
-            
           });
+
 
           function pilih_customer(){
             var customer_id = $("#customer_id").val();
@@ -483,34 +460,7 @@
               }
             });
           }
-            
-            // $(document).ready(function(){
-            //   let baris = 1
-            
-            //   $(document).on('click', '#tambah', function (){
-            //     baris = baris + 1
-            //     var html = "<tr id='baris'" +baris+ ">"
-            //       html += "<td><button data-row='baris'"+baris+" class='btn btn-sm btn-danger' id='hapus'><i class='bi bi-trash'></i></button></td>"
-            //         html +="<td>"+baris+"</td>"
-            //         html += "<td><select name='barang_id' id='barang_id' class='form-control' onchange='pilih_barang()'><option value=''>-- Pilih Barang --</option>@foreach($barang as $data)<option value='{{ $data->id }}'>{{ $data->kode }} -- {{ $data->nama }}</option>@endforeach</select>  </td>"
-            //         html += "<td><input type='text' class='form-control' id='namabarang' name='namabarang' readonly></td>"
-            //         html += "<td><input type='text' class='form-control' id='qty' name='qty'></td>"
-            //         html += "<td><input type='text' class='form-control' id='hargabandrol' name='hargabandrol' readonly></td>"
-            //         html += "<td><input type='text' class='form-control' id='diskon-pct' name='diskon_pct'></td>"
-            //         html += "<td><input type='text' class='form-control' id='diskon_rp' name='diskon_rp'></td>"
-            //         html += "<td><input type='text' class='form-control' id='hrgdiskon' name='hrgdiskon'></td>"
-            //         html += "<td><input type='text' class='form-control' id='total' name='total'></td>"
-            //         html += "</tr>"
-            
-            //         $('#tabel1').append(html)
-            //   })
-            // })
-
-            // $(document).on('click', '#hapus', function (){
-            //   let hapus = $(this).data('row')
-            //   $(this).parent().parent().remove()
-            // })
-
+   
           function pilih_barang(){
             var barang_id = $("#barang_id").val();
 

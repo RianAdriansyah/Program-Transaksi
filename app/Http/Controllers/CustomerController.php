@@ -38,9 +38,9 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'kode' => "required|unique:barangs",
+            'kode' => "required|unique:barangs|unique:customers",
             'nama' => "required|max:255",
-            'telp' => 'required|numeric'
+            'telp' => 'required|numeric|digits_between:10,13'
         ]);
 
         Customer::create($data);

@@ -26,9 +26,11 @@
                           </div>
                         @enderror
                       </div>                
-                      <div class="mb-3">
-                        <label for="telepon" class="form-label">Telepon</label>
-                        <input type="text" class="form-control @error ('telp') is-invalid @enderror" id="" name="telp" value="{{ old('telp') }}">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">+62</span>
+                        <input type="text" class="form-control @error ('telp') is-invalid @enderror" placeholder="No Telepon" aria-label="telp" name="telp" id="telp" aria-describedby="basic-addon1" value="{{ old('telp') }}">
+                        {{-- <label for="telepon" class="form-label">Telepon</label>
+                        <input type="text" class="form-control @error ('telp') is-invalid @enderror" id="" name="telp" value="{{ old('telp') }}"> --}}
                          @error('telp')
                           <div class="invalid-feedback">
                               {{ $message }}
@@ -114,10 +116,10 @@
                         <label for="nama" class="form-label">Nama</label>
                         <input type="text" class="form-control" id="nama" name="nama">
                       </div>                
-                      <div class="mb-3">
-                        <label for="telepon" class="form-label">Telepon</label>
-                        <input type="text" class="form-control" id="telp" name="telp">
-                      </div>    
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">+62</span>
+                        <input type="text" class="form-control @error ('telp') is-invalid @enderror" placeholder="No Telepon" aria-label="telp" name="telp" id="telp" aria-describedby="basic-addon1" value="{{ old('telp') }}">
+                      </div>       
                     </div>
                   </div>
                 </div>

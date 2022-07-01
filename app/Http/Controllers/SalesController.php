@@ -100,7 +100,8 @@ class SalesController extends Controller
             $salesdetail->customer_id = $cstmr;
             $salesdetail->save();
         }
-        // $backup = DataBackup::delete();
+
+        DataBackup::truncate();
 
         return redirect('formulir')->with('success', 'Data berhasil ditambahkan!');
     }
@@ -124,7 +125,14 @@ class SalesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $databackup = DataBackup::findOrFail($id);
+        $sales = Sales::with('customers', 'barangs')->get();
+        $customer = Customer::all();
+        $barang = Barang::all();
+
+        $salesno = Sales::count();
+
+        return view('edit', compact('sales', 'customer', 'barang', 'databackup', 'salesno'));
     }
 
     /**
@@ -134,9 +142,30 @@ class SalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, DataBackup $databackup, $id)
     {
-        //
+        //  $databackup = DataBackup::findOrFail($id);
+
+        $rules = [
+            'harga_bandrol' => 'required',
+            'qty' => 'required',
+            'diskon_pct' => 'required',
+            'diskon_nilai' => 'required',
+            'harga_diskon' => 'required',
+            'total' => 'required',
+            'subtotal' => 'required',
+            'diskon' => 'required',
+            'ongkir' => 'required',
+            'total_bayar' => 'required',
+            'barang_id' => 'required'
+        ];
+
+        $data = $request->validate($rules);
+
+        
+        DataBackup::where('id', $id)->update($data);
+        // dd($data);
+        return redirect('formulir')->with('success', 'Barang berhasil diupdate!');
     }
 
     /**
@@ -147,10 +176,7 @@ class SalesController extends Controller
      */
     public function destroy($id)
     {
-        // $databackup = DataBackup::findOrFail($id);
-        // $databackup->delete();
-
-        // return redirect('formulir')->with('success', 'Data berhasil dihapus!');
+        //
     }
 
     public function tampilCustomer(Request $request){
@@ -240,4 +266,11 @@ class SalesController extends Controller
 
         return redirect('formulir')->with('success', 'Data berhasil dihapus!');
     }
+
+    // public function batal(){
+
+    //     DataBackup::truncate();
+
+    //     return redirect('formulir');
+    // }
 }

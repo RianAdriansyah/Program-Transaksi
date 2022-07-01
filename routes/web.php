@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SalesDetailController;
+use App\Models\DataBackup;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,11 @@ Route::post('/formulir/createBackup', [SalesController::class, 'createBackup']);
 Route::put('/formulir/updateBackup/{id}', [SalesController::class, 'updateBackup']);
 Route::delete('/formulir/deletebackup/{id}', [SalesController::class, 'deletebackup']);
 
+Route::put('/formulir/update/{id}', [SalesController::class, 'update']);
+// Route::post('/formulir/batal', [SalesController::class, 'batal']);
+
+Route::get('/batal', function () {
+  DataBackup::truncate();
+  return redirect('formulir');
+});
 

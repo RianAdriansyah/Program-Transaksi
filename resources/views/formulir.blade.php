@@ -121,8 +121,10 @@
                     </thead>
                     <tbody id="data-barang">
                       <?php $subtotal = 0; ?>
+                      @if ($databackup->count())
                       @foreach ($databackup as $item)
                       <?php $subtotal += $item->total; ?>
+                          
                       <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>
@@ -152,25 +154,21 @@
                           <input type="text" class="form-control" name="total[]" id="totalawal" value="{{ $item->total }}" readonly>
                         </td> 
                         <td class="d-flex justify-content-evenly">
-                            <button type="button" class="btn btn-sm btn-success mx-1" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modaledit"
-                            data-id_data="{{ $item->id }}"
-                            data-mybandrol="{{ $item->harga_bandrol }}"
-                            data-myqty="{{ $item->qty }}"
-                            data-mypct="{{ $item->diskon_pct }}"
-                            data-myrp="{{ $item->diskon_nilai }}"
-                            data-myhrgdiskon="{{ $item->harga_diskon }}"
-                            data-mytotal="{{ $item->total }}"
-                            data-mysubtotal="{{ $item->subtotal }}"
-                            data-mydiskon="{{ $item->diskon }}"
-                            data-myongkir="{{ $item->ongkir }}"
-                            data-mytotalbayar="{{ $item->total_bayar }}"
-                            data-mybarang="{{ $item->barang_id }}"><i class="bi bi-pencil-square"></i></button>                          
+
+                          <a href="{{ route('formulir.edit', $item->id) }}" class="btn btn-sm btn-success mx-1"><i class="bi bi-pencil-square"></i></a>
                         <button id="hapusbarang" class="btn btn-sm btn-danger mx-1" type="button" data-myid="{{ $item->id }}"><i class="bi bi-trash"></i></button>
                         </td>
                       </tr>
                       @endforeach
+                      @else
+                      <tbody>
+                        <tr>
+                          <td colspan="11">
+                            <h5 class="text-center">Belum ada barang</h5>
+                          </td>
+                        </tr>
+                      </tbody>
+                      @endif
                     </tbody>
                     
                   </table>
@@ -188,12 +186,13 @@
                   <tr>
                     <th class="text-start">Diskon</th>
                     <td>&nbsp : &nbsp</td>
-                    <td class="text-end"><input type="text" name="diskon" id="diskonakhir" oninput="bayar_akhir()" class="form-control text-end" style="height: 30px"></td>
+                    <td class="text-end"><input type="text" name="diskon" id="diskonakhir" oninput="bayar_akhir()" class="form-control text-end" style="height: 30px" required></td>
                   </tr>
                   <tr>
                     <th class="text-start">Ongkir</th>
                     <td>&nbsp : &nbsp</td>
-                    <td class="text-end"><input type="text" name="ongkir" id="ongkirakhir" oninput="bayar_akhir()" class="form-control text-end" style="height: 30px"></td>
+                    <td class="text-end"><input type="text" name="ongkir" id="ongkirakhir" oninput="bayar_akhir()" class="form-control text-end" style="height: 30px" required>
+                    </td>
                   </tr>
                   <tr>
                     <th class="text-start">Total Bayar</th>
@@ -207,7 +206,7 @@
               <div class="col-lg-12 d-flex justify-content-evenly">
                 <button type="submit" class="btn btn-primary">Simpan</button>
               </form>
-              <a href="" class="btn btn-secondary">Batal</a>
+              <a href="/batal" class="btn btn-secondary">Batal</a>
             </div>
           </div>
         </div>
@@ -599,35 +598,36 @@
             }
           }
 
-           $('#modaledit').on('show.bs.modal', function (event){
-          var button = $(event.relatedTarget);
-          var bandrol = button.data('mybandrol');
-          var qty = button.data('myqty');
-          var pct = button.data('mypct');
-          var rp = button.data('myrp');
-          var hrgdiskon = button.data('myhrgdiskon');
-          var total = button.data('mytotal');
-          var subtotal = button.data('mysubtotal');
-          var diskon = button.data('mydiskon');
-          var ongkir = button.data('myongkir');
-          var totalbayar = button.data('mytotalbayar');
-          var barang = button.data('mybarang');
-          var id_data = button.data('id_data');
+            // MODAL EDIT
+        //    $('#modaledit').on('show.bs.modal', function (event){
+        //   var button = $(event.relatedTarget);
+        //   var bandrol = button.data('mybandrol');
+        //   var qty = button.data('myqty');
+        //   var pct = button.data('mypct');
+        //   var rp = button.data('myrp');
+        //   var hrgdiskon = button.data('myhrgdiskon');
+        //   var total = button.data('mytotal');
+        //   var subtotal = button.data('mysubtotal');
+        //   var diskon = button.data('mydiskon');
+        //   var ongkir = button.data('myongkir');
+        //   var totalbayar = button.data('mytotalbayar');
+        //   var barang = button.data('mybarang');
+        //   var id_data = button.data('id_data');
 
-          var modal = $(this)
-          modal.find('#harga_bandrol2').val(bandrol);
-          modal.find('#qty2').val(qty);
-          modal.find('#diskon_pct2').val(pct);
-          modal.find('#diskon_rp2').val(rp);
-          modal.find('#hrgdiskon2').val(hrgdiskon);
-          modal.find('#total2').val(total);
-          modal.find('#subtotal2').val(subtotal);
-          modal.find('#diskon2').val(diskon);
-          modal.find('#ongkir2').val(ongkir);
-          modal.find('#totalbayar2').val(totalbayar);
-          modal.find('#barang_id2').val(barang);
-          modal.find('#id_data').val(id_data);
-        })    
+        //   var modal = $(this)
+        //   modal.find('#harga_bandrol2').val(bandrol);
+        //   modal.find('#qty2').val(qty);
+        //   modal.find('#diskon_pct2').val(pct);
+        //   modal.find('#diskon_rp2').val(rp);
+        //   modal.find('#hrgdiskon2').val(hrgdiskon);
+        //   modal.find('#total2').val(total);
+        //   modal.find('#subtotal2').val(subtotal);
+        //   modal.find('#diskon2').val(diskon);
+        //   modal.find('#ongkir2').val(ongkir);
+        //   modal.find('#totalbayar2').val(totalbayar);
+        //   modal.find('#barang_id2').val(barang);
+        //   modal.find('#id_data').val(id_data);
+        // })    
 
           </script>
 

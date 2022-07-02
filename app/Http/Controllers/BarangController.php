@@ -38,7 +38,7 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'kode' => "required|unique:customers",
+            'kode' => "required|unique:customers|unique:barangs",
             'nama' => "required|max:255",
             'harga' => 'required|numeric'
         ]);
@@ -84,7 +84,7 @@ class BarangController extends Controller
         // $request->id_barang BERASAL DARI INPUT HIDDEN
 
         $data = $request->validate([
-            'kode' => "required|unique:customers|unique:barangs",
+            'kode' => "required|unique:customers",
             'nama' => "required|max:255",
             'harga' => 'required|numeric'
         ]);
